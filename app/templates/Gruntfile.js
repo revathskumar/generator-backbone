@@ -359,7 +359,26 @@ module.exports = function (grunt) {
                     ]
                 }
             }
-        }
+        }<% if (!includeRequireJS) { %>,
+        wiredep: {
+            all: {
+              src: [
+                'app/index.html'
+              ],
+              options: {
+                exclude: ['underscore']
+              }
+            },
+            test: {
+                src: [
+                    'test/index.html'
+                ],
+                options: {
+                    ignorePath: '../app/',
+                    exclude: ['underscore']
+                }
+            }
+        }<% } %>
     });
 
     grunt.registerTask('createDefaultTemplate', function () {
@@ -379,7 +398,8 @@ module.exports = function (grunt) {
         if (target === 'test') {
             return grunt.task.run([
                 'clean:server',<% if (options.coffee) { %>
-                'coffee',<% } %>
+                'coffee',<% } %><% if (!includeRequireJS) { %>
+                'wiredep:test',<% } %>
                 'createDefaultTemplate',<% if (templateFramework === 'mustache' ) { %>
                 'mustache',<% } else if (templateFramework === 'handlebars') { %>
                 'handlebars',<% } else { %>
@@ -393,7 +413,8 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',<% if (options.coffee) { %>
-            'coffee:dist',<% } %>
+            'coffee:dist',<% } %><% if (!includeRequireJS) { %>
+            'wiredep:all',<% } %>
             'createDefaultTemplate',<% if (templateFramework === 'mustache') { %>
             'mustache',<% } else if (templateFramework === 'handlebars') { %>
             'handlebars',<% } else { %>
@@ -409,7 +430,8 @@ module.exports = function (grunt) {
         isConnected = Boolean(isConnected);
         var testTasks = [
                 'clean:server',<% if (options.coffee) { %>
-                'coffee',<% } %>
+                'coffee',<% } %><% if (!includeRequireJS) { %>
+                'wiredep:test',<% } %>
                 'createDefaultTemplate',<% if (templateFramework === 'mustache' ) { %>
                 'mustache',<% } else if (templateFramework === 'handlebars') { %>
                 'handlebars',<% } else { %>
@@ -431,7 +453,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',<% if (options.coffee) { %>
-        'coffee',<% } %>
+        'coffee',<% } %><% if (!includeRequireJS) { %>
+        'wiredep:all',<% } %>
         'createDefaultTemplate',<% if (templateFramework === 'mustache' ) { %>
         'mustache',<% } else if (templateFramework === 'handlebars') { %>
         'handlebars',<% } else { %>

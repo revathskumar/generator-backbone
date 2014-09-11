@@ -21,9 +21,10 @@
     "grunt-contrib-watch": "~0.5.3",<% if (testFramework === 'jasmine') { %>
     "grunt-contrib-jasmine": "~0.5.2",<% }else{ %>
     "grunt-mocha": "~0.4.10",<% } %>
-    "grunt-usemin": "~0.1.12",<% if(includeRequireJS){ %>
+    "grunt-usemin": "~0.1.12",<% if (includeRequireJS) { %>
     "grunt-bower-requirejs": "~0.8.3",
-    "grunt-requirejs": "~0.4.0",<% } %>
+    "grunt-requirejs": "~0.4.0",<% } else { %>
+    "grunt-wiredep": "^1.9.0",<% } %>
     "grunt-rev": "~0.1.0",
     "grunt-open": "~0.2.3",
     "load-grunt-tasks": "~0.3.0",
